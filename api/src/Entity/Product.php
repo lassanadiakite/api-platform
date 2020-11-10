@@ -101,6 +101,16 @@ class Product
      */
     private $contentChanged;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $countInStock;
+
 
     /**
      * @return \DateTime
@@ -291,6 +301,30 @@ class Product
     public function setUserId(?User $user_id): self
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCountInStock(): ?int
+    {
+        return $this->countInStock;
+    }
+
+    public function setCountInStock(int $countInStock): self
+    {
+        $this->countInStock = $countInStock;
 
         return $this;
     }
