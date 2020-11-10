@@ -15,13 +15,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AppFixtures extends Fixture
 {
 
- /*   private $encoder ;
+    private $encoder ;
 
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->encoder = $encoder;
     }
- */
+ 
     public function load(ObjectManager $manager)
     {
 
@@ -53,7 +53,7 @@ class AppFixtures extends Fixture
 
             $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
             */
-            $password = ('password');
+            $password = $this->encoder->encodePassword($user, 'password');
             
             $user->setFirstName($faker->firstname)
                  ->setLastName($faker->lastname)
@@ -79,14 +79,14 @@ class AppFixtures extends Fixture
             $pictureId = $faker->numberBetween(1, 99) . '.jpg';
 
             $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
-
-            $hash = $this->encoder->encodePassword($userPresta, 'password');
-          */
+            */
+            $password = $this->encoder->encodePassword($userSeller, 'password');
+          
             $userSeller->setFirstName($faker->firstname)
             ->setLastName($faker->lastname)
             ->setEmail($faker->email)
             ->setRoles(['ROLE_SELLER'])
-            ->setPassword("password");
+            ->setPassword($password);
            // ->setPicture($picture);
             $manager->persist($userSeller);
             $usersSeller[]= $userSeller;
@@ -101,57 +101,69 @@ class AppFixtures extends Fixture
             $manager->persist($category);
             $categories[]= $category;
         }
+        
         // Gestion des Cards
+              $products = [];
+        
             $cards = [];
-        for ($i = 1; $i <= mt_rand(0, 10); $i++) {
+        for ($k = 1; $k <= mt_rand(6, 10); $k++) {
             $card = new Card();
-            $userCard   = $users[mt_rand(0, count($users) - 1)];
+            
+
+          //  $product = $products[mt_rand(0, count($products) -1)];
+            $userCard  = $users[$faker->unique()->numberBetween(0, count($users) - 1)];
 
             $card->setUserId($userCard);
-      
+
+                //Nous gérons les Produits
+        
+            for($i=1; $i <= 30; $i++){
+                $product = new Product(); 
+                
+        
+                $name       = $faker->jobTitle;
+                $image   = $faker->imageUrl();
+            //    $introduction = $faker->sentence($nbWords = 15, $variableNbWords = false);
+                $description      = '<p>'. join('</p><p>', $faker->paragraphs(4)) . '</p>';
+            /* $updatedAt    = $faker->dateTime('now');
+                ->setUpdatedAt($updatedAt)*/
+                
+                $userSeller    = $usersSeller[mt_rand(0, count($usersSeller) -1)];
+                $category = $categories[mt_rand(0, count($categories) -1)];
+               // $card = $cards[mt_rand(0, count($cards) -1)];
+        
+                $product->setName($name)
+                ->setImage($image)
+                ->setReference($faker->isbn13()) 
+                ->setDescription($description)
+                ->setPrice(mt_rand(40, 200))
+                ->setUserId($userSeller)
+                ->setCategory($category)
+                ->setCountInStock(mt_rand(0, 15))
+                ->addCard($card);
+            
+                    // Gestion des commentaires
+                    if (mt_rand(0, 1)) {
+                        $userComment   = $users[mt_rand(0, count($users) - 1)];
+                        $comment = new Comment();
+                        $comment->setContent($faker->paragraph())
+                            ->setRating(mt_rand(1, 5))
+                            ->setAuthor($userComment)
+                            ->setProduct($product);
+        
+                        $manager->persist($comment);
+                    }
+                
+                $manager->persist($product);
+                $products[] = $product;
+                
+                }
+        
             $manager->persist($card);
             $cards[] = $card;
         }
 
-        //Nous gérons les Produits
-        for($i=1; $i <= 30; $i++){
-        $product = new Product(); 
         
-
-        $name       = $faker->jobTitle;
-  //      $coverImage   = $faker->imageUrl(1000,350);
-    //    $introduction = $faker->sentence($nbWords = 15, $variableNbWords = false);
-        $description      = '<p>'. join('</p><p>', $faker->paragraphs(4)) . '</p>';
-       /* $updatedAt    = $faker->dateTime('now');
-        ->setUpdatedAt($updatedAt)*/
-        
-        $userSeller    = $usersSeller[mt_rand(0, count($usersSeller -1))];
-        $category = $categories[mt_rand(0, count($categories) -1)];
-        $card = $cards[mt_rand(0, count($cards) -1)];
-
-        $product->setName($name)
-          // ->setCoverImage($coverImage)
-           ->setReference(1234) 
-           ->setDescription($description)
-           ->setPrice(mt_rand(40, 200))
-           ->setUserId($userSeller)
-           ->setCategory($category)
-           ->addCard($card);
-    
-            // Gestion des commentaires
-            if (mt_rand(0, 1)) {
-                $comment = new Comment();
-                $comment->setContent($faker->paragraph())
-                    ->setRating(mt_rand(1, 5))
-                    ->setAuthor($userCard)
-                    ->setProduct($product);
-
-                $manager->persist($comment);
-            }
-        
-        $manager->persist($product);
-        
-        }
         $manager->flush();
     }
 }
