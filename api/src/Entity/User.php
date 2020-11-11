@@ -9,88 +9,111 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource
+ * @ApiResource(
+ *     normalizationContext={"groups"={"user_read"}},
+ *     denormalizationContext={"groups"={"user_write"}},
+ *     paginationItemsPerPage=20,
+ *     collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "put"={},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
 class User implements UserInterface
 {
     /**
+     * @Groups({"user_read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
 
+	/**
+	 * @Groups({"user_read", "user_write", "product_read", "card_read", "comment_read"})
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $firstName;
+
+	/**
+	 * @Groups({"user_read", "user_write", "product_read", "card_read", "comment_read"})
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $lastName;
+
     /**
+     * @Groups({"user_read", "user_write", "product_read", "card_read"})
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
+	/**
+	 * @Groups({"user_write"})
+	 * @var string The hashed password
+	 * @ORM\Column(type="string")
+	 */
+	private $password;
+
     /**
+     * @Groups({"user_read", "user_write"})
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private $roles = ["ROLE_USER"];
+
+	/**
+	 * @var \DateTime $created
+	 * @Groups({"user_read"})
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
+	 */
+	private $created;
+
+	/**
+	 * @var \DateTime $updated
+	 * @Groups({"user_read"})
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(type="datetime")
+	 */
+	private $updated;
+
+	/**
+	 * @var \DateTime $contentChanged
+	 * @ORM\Column(name="content_changed", type="datetime", nullable=true)
+	 * @Gedmo\Timestampable(on="change", field={"title", "body"})
+	 */
+	private $contentChanged;
+
+	/**
+	 * @Groups({"user_read", "user_write"})
+	 * @ORM\OneToOne(targetEntity=Card::class, mappedBy="user_id", cascade={"persist", "remove"})
+	 */
+	private $card;
+
+	/**
+	 * @Groups({"user_read", "user_write"})
+	 * @ORM\OneToMany(targetEntity=Product::class, mappedBy="user_id", orphanRemoval=true)
+	 */
+	private $products;
 
     /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="idUser")
      */
-    private $password;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastName;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Card::class, mappedBy="user_id", cascade={"persist", "remove"})
-     */
-    private $card;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="user_id", orphanRemoval=true)
-     */
-    private $products;
+    private $comments;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
-
-    // GEDMO
-
-    /**
-     * @var \DateTime $created
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
-     */
-    private $created;
-
-    /**
-     * @var \DateTime $updated
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
-     */
-    private $updated;
-
-    /**
-     * @var \DateTime $contentChanged
-     *
-     * @ORM\Column(name="content_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"title", "body"})
-     */
-    private $contentChanged;
-
 
     /**
      * @return \DateTime
@@ -139,10 +162,6 @@ class User implements UserInterface
     {
         $this->contentChanged = $contentChanged;
     }
-
-
-    // END GEDMO
-
 
     public function getId(): ?int
     {
@@ -288,6 +307,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($product->getUserId() === $this) {
                 $product->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getIdUser() === $this) {
+                $comment->setIdUser(null);
             }
         }
 

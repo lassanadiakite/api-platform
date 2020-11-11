@@ -6,14 +6,28 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource
+ * @ApiResource(
+ *     normalizationContext={"groups"={"comment_read"}},
+ *     denormalizationContext={"groups"={"comment_write"}},
+ *     paginationItemsPerPage=20,
+ *     collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "put"={"denormalization_context"={"groups"={"card_put"}}},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=CommentRepository::class)
  */
 class Comment
 {
     /**
+     * @Groups({"comment_read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -21,16 +35,19 @@ class Comment
     private $id;
 
     /**
+     * @Groups({"comment_read", "comment_write"})
      * @ORM\Column(type="integer")
      */
     private $rating;
 
     /**
+     * @Groups({"comment_read", "comment_write"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $content;
 
     /**
+     * @Groups({"comment_read", "comment_write"})
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -40,7 +57,7 @@ class Comment
 
     /**
      * @var \DateTime $created
-     *
+     * @Groups({"comment_read"})
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
@@ -48,7 +65,7 @@ class Comment
 
     /**
      * @var \DateTime $updated
-     *
+     * @Groups({"comment_read"})
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
@@ -61,6 +78,12 @@ class Comment
      * @Gedmo\Timestampable(on="change", field={"title", "body"})
      */
     private $contentChanged;
+
+    /**
+     * @Groups({"comment_read", "comment_write"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     */
+    private $idUser;
 
 
     /**
@@ -151,6 +174,18 @@ class Comment
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?User
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(?User $idUser): self
+    {
+        $this->idUser = $idUser;
 
         return $this;
     }

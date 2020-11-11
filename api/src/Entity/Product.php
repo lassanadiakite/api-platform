@@ -8,14 +8,28 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource
+ * @ApiResource(
+ *     normalizationContext={"groups"={"product_read"}},
+ *     denormalizationContext={"groups"={"product_write"}},
+ *     paginationItemsPerPage=20,
+ *     collectionOperations={
+ *          "get"={},
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "put"={"denormalization_context"={"groups"={"product_put"}}},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 class Product
 {
     /**
+     * @Groups({"product_read"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -23,32 +37,46 @@ class Product
     private $id;
 
     /**
+     * @Groups({"product_put"})
+     * @Groups({"card_read"})
+     * @Groups({"product_read", "product_write"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Groups({"product_put"})
+     * @Groups({"card_read"})
+     * @Groups({"product_read", "product_write"})
      * @ORM\Column(type="float")
      */
     private $price;
 
     /**
+     * @Groups({"card_read"})
+     * @Groups({"product_read", "product_write"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $reference;
 
     /**
+     * @Groups({"product_put"})
+     * @Groups({"product_read", "product_write"})
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
+     * @Groups({"product_put"})
+     * @Groups({"card_read"})
+     * @Groups({"product_read", "product_write"})
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
     /**
+     * @Groups({"product_read"})
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product", orphanRemoval=true)
      */
     private $comments;
@@ -59,6 +87,7 @@ class Product
     private $cards;
 
     /**
+     * @Groups({"product_read", "product_write"})
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -69,7 +98,7 @@ class Product
 
     /**
      * @var \DateTime $created
-     *
+     * @Groups({"product_read"})
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
@@ -77,7 +106,7 @@ class Product
 
     /**
      * @var \DateTime $updated
-     *
+     * @Groups({"product_read"})
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
@@ -85,7 +114,6 @@ class Product
 
     /**
      * @var \DateTime $contentChanged
-     *
      * @ORM\Column(name="content_changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"title", "body"})
      */
