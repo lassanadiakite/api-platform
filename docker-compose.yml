@@ -127,7 +127,17 @@ services:
       - target: 3000
         published: 444
         protocol: tcp
+<<<<<<< HEAD
 
+=======
+  adminer:
+    depends_on:
+      - db
+    restart: always
+    image: adminer:latest
+    ports:
+      - 8080:8080
+>>>>>>> b00cca81c44c4cc8698a970a5198abc80fc2c547
   dev-tls:
     build:
       context: ./docker/dev-tls

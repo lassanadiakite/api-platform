@@ -22,4 +22,11 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+<<<<<<< HEAD
 //
+=======
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+>>>>>>> b00cca81c44c4cc8698a970a5198abc80fc2c547

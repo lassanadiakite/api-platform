@@ -1,3 +1,9 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+<<<<<<< HEAD
+=======
+authentication_token:
+    path: /authentication_token
+    methods: ['POST']
+>>>>>>> b00cca81c44c4cc8698a970a5198abc80fc2c547

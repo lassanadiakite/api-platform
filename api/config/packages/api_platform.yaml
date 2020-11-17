@@ -7,6 +7,22 @@ api_platform:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+<<<<<<< HEAD
     # Mercure integration, remove if unwanted
     mercure:
         hub_url: '%env(MERCURE_SUBSCRIBE_URL)%'
+=======
+        api_keys:
+            apiKey:
+                name: Authorization
+                type: header
+    # Mercure integration, remove if unwanted
+    mercure:
+        hub_url: '%env(MERCURE_SUBSCRIBE_URL)%'
+    collection:
+        pagination:
+            enabled: false
+            items_per_page: 5
+            client_enabled: true
+            client_items_per_page: true
+>>>>>>> b00cca81c44c4cc8698a970a5198abc80fc2c547

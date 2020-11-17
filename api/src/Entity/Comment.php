@@ -62,6 +62,15 @@ class Comment
      */
     private $contentChanged;
 
+<<<<<<< HEAD
+=======
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+>>>>>>> b00cca81c44c4cc8698a970a5198abc80fc2c547
 
     /**
      * @return \DateTime
@@ -154,4 +163,19 @@ class Comment
 
         return $this;
     }
+<<<<<<< HEAD
+=======
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+>>>>>>> b00cca81c44c4cc8698a970a5198abc80fc2c547
 }

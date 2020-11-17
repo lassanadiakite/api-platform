@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+<<<<<<< HEAD
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +12,27 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiResource
+=======
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProductRepository;
+use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
+/**
+ * @ApiResource(
+ *  attributes={
+ *      "pagination_enabled"=true,
+ *      "pagination_items_per_page"=20,
+ *      "order": {"price":"desc"}
+ *  })
+ * @ApiFilter(OrderFilter::class, properties={"price","reference"})
+ * @ApiFilter(SearchFilter::class, properties={"name":"partial","category.name":"partial"})
+>>>>>>> b00cca81c44c4cc8698a970a5198abc80fc2c547
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 class Product
@@ -91,6 +113,19 @@ class Product
      */
     private $contentChanged;
 
+<<<<<<< HEAD
+=======
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $countInStock;
+
+>>>>>>> b00cca81c44c4cc8698a970a5198abc80fc2c547
 
     /**
      * @return \DateTime
@@ -284,4 +319,31 @@ class Product
 
         return $this;
     }
+<<<<<<< HEAD
+=======
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCountInStock(): ?int
+    {
+        return $this->countInStock;
+    }
+
+    public function setCountInStock(int $countInStock): self
+    {
+        $this->countInStock = $countInStock;
+
+        return $this;
+    }
+>>>>>>> b00cca81c44c4cc8698a970a5198abc80fc2c547
 }
