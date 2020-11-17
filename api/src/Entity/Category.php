@@ -36,7 +36,8 @@ class Category
     private $id;
 
     /**
-     * @Groups({"category_read", "category_write"})
+     * @Groups({"user_read"})
+     * @Groups({"category_read", "category_write", "product_read"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;

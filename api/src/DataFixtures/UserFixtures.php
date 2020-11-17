@@ -30,15 +30,19 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 			    ->setRoles(["ROLE_USER"])
 		    ;
 
+		    // Card
+		    $card = (new Card())
+			    ->setUserId($user);
+
 	    	for ($j=0; $j<5; $j++) {
 
 	    		// Product
 	    		$product = (new Product())
 				    ->setName($faker->name)
 				    ->setPrice($faker->numberBetween(10, 500))
-				    ->setReference($faker->isbn13)
+				    ->setReference($faker->vat)
 				    ->setDescription($faker->paragraph(5))
-				    ->setCategory($faker->randomKey($categories))
+				    ->setCategory($faker->randomElement($categories))
 				    ->setUserId($user)
 			    ;
 
@@ -53,17 +57,17 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 				    $manager->persist($comment);
 			    }
 
-			    // Card
-			    for ($l=0; $l<4; $l++) {
-				    $card = (new Card())
-					    ->setUserId($user)
-					    ->addProduct($product)
-					    ->setPrice($product->getPrice())
-				    ;
-				    $manager->persist($card);
+			    // Price
+			    $price = 0;
 
+			    for ($l=0; $l<10; $l++) {
+			    	$price = $price + $product->getPrice();
+			    	$card
+					    ->addProduct($product)
+					    ->setPrice($price);
 			    }
 
+			    $manager->persist($card);
 	    		$manager->persist($product);
 		    }
 	    }

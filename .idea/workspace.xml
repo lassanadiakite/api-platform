@@ -2,22 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="226e87c5-418e-499e-ba00-f6856777dcf0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/api/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/api/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/config/bundles.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/DataFixtures/CategoryFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/DataFixtures/CategoryFixtures.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/DataFixtures/UserFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/DataFixtures/UserFixtures.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/Entity/Card.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/Entity/Card.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/Entity/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/Entity/Category.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/Entity/Comment.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/Entity/Comment.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/Entity/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/Entity/Product.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/api/symfony.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/api/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -154,7 +153,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.PHP" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Console Colors" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -165,7 +164,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1605100178671</updated>
-      <workItem from="1605100180998" duration="6296000" />
+      <workItem from="1605100180998" duration="7205000" />
+      <workItem from="1605358249090" duration="5637000" />
+      <workItem from="1605392395811" duration="608000" />
+      <workItem from="1605451313813" duration="786000" />
+      <workItem from="1605515311808" duration="10000" />
+      <workItem from="1605624832344" duration="464000" />
+      <workItem from="1605625536410" duration="355000" />
+      <workItem from="1605625902374" duration="532000" />
+      <workItem from="1605626676396" duration="560000" />
+      <workItem from="1605627326605" duration="3611000" />
     </task>
     <servers />
   </component>
@@ -181,5 +189,13 @@
       <screen x="-310" y="-1080" width="1920" height="1080" />
     </state>
     <state x="387" y="-779" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1440.900/-310.-1080.1920.1080@-310.-1080.1920.1080" timestamp="1605124945894" />
+    <state x="262" y="-993" key="SettingsEditor" timestamp="1605628012891">
+      <screen x="-310" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="262" y="-993" key="SettingsEditor/0.0.1440.900/-310.-1080.1920.1080@-310.-1080.1920.1080" timestamp="1605628012891" />
+    <state width="600" height="428" key="javadoc.popup" timestamp="1605628732585">
+      <screen x="-310" y="-1080" width="1920" height="1080" />
+    </state>
+    <state width="600" height="428" key="javadoc.popup/0.0.1440.900/-310.-1080.1920.1080@-310.-1080.1920.1080" timestamp="1605628732585" />
   </component>
 </project>

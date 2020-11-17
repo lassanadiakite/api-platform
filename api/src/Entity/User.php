@@ -39,19 +39,42 @@ class User implements UserInterface
     private $id;
 
 	/**
-	 * @Groups({"user_read", "user_write", "product_read", "card_read", "comment_read"})
+	 * @Groups({
+	 *     "user_read",
+	 *     "user_write",
+	 *     "product_read",
+	 *     "card_read",
+	 *     "comment_read",
+	 *     "comment_read",
+	 *     "product_read"
+	 * })
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $firstName;
 
 	/**
-	 * @Groups({"user_read", "user_write", "product_read", "card_read", "comment_read"})
+	 * @Groups({
+	 *     "user_read",
+	 *     "user_write",
+	 *     "product_read",
+	 *     "card_read",
+	 *     "comment_read",
+	 *     "comment_read",
+	 *     "product_read"
+	 * })
 	 * @ORM\Column(type="string", length=255)
 	 */
 	private $lastName;
 
     /**
-     * @Groups({"user_read", "user_write", "product_read", "card_read"})
+     * @Groups({
+     *     "user_read",
+     *     "user_write",
+     *     "product_read",
+     *     "card_read",
+     *     "comment_read",
+     *     "product_read"
+     * })
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -68,6 +91,23 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = ["ROLE_USER"];
+
+	/**
+	 * @Groups({"user_read", "user_write"})
+	 * @ORM\OneToOne(targetEntity=Card::class, mappedBy="user_id", cascade={"persist", "remove"})
+	 */
+	private $card;
+
+	/**
+	 * @Groups({"user_read", "user_write"})
+	 * @ORM\OneToMany(targetEntity=Product::class, mappedBy="user_id", orphanRemoval=true)
+	 */
+	private $products;
+
+	/**
+	 * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="idUser")
+	 */
+	private $comments;
 
 	/**
 	 * @var \DateTime $created
@@ -91,23 +131,6 @@ class User implements UserInterface
 	 * @Gedmo\Timestampable(on="change", field={"title", "body"})
 	 */
 	private $contentChanged;
-
-	/**
-	 * @Groups({"user_read", "user_write"})
-	 * @ORM\OneToOne(targetEntity=Card::class, mappedBy="user_id", cascade={"persist", "remove"})
-	 */
-	private $card;
-
-	/**
-	 * @Groups({"user_read", "user_write"})
-	 * @ORM\OneToMany(targetEntity=Product::class, mappedBy="user_id", orphanRemoval=true)
-	 */
-	private $products;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="idUser")
-     */
-    private $comments;
 
     public function __construct()
     {

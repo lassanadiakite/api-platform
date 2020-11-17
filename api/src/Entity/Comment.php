@@ -53,6 +53,12 @@ class Comment
      */
     private $product;
 
+	/**
+	 * @Groups({"comment_read", "comment_write", "product_read"})
+	 * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+	 */
+	private $idUser;
+
     // GEDMO
 
     /**
@@ -78,13 +84,6 @@ class Comment
      * @Gedmo\Timestampable(on="change", field={"title", "body"})
      */
     private $contentChanged;
-
-    /**
-     * @Groups({"comment_read", "comment_write"})
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
-     */
-    private $idUser;
-
 
     /**
      * @return \DateTime

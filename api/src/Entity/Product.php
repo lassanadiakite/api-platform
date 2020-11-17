@@ -37,6 +37,7 @@ class Product
     private $id;
 
     /**
+     * @Groups({"user_read"})
      * @Groups({"product_put"})
      * @Groups({"card_read"})
      * @Groups({"product_read", "product_write"})
@@ -45,6 +46,7 @@ class Product
     private $name;
 
     /**
+     * @Groups({"user_read"})
      * @Groups({"product_put"})
      * @Groups({"card_read"})
      * @Groups({"product_read", "product_write"})
@@ -53,6 +55,7 @@ class Product
     private $price;
 
     /**
+     * @Groups({"user_read"})
      * @Groups({"card_read"})
      * @Groups({"product_read", "product_write"})
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -60,6 +63,7 @@ class Product
     private $reference;
 
     /**
+     * @Groups({"user_read"})
      * @Groups({"product_put"})
      * @Groups({"product_read", "product_write"})
      * @ORM\Column(type="text")
@@ -67,6 +71,7 @@ class Product
     private $description;
 
     /**
+     * @Groups({"user_read"})
      * @Groups({"product_put"})
      * @Groups({"card_read"})
      * @Groups({"product_read", "product_write"})
@@ -80,11 +85,6 @@ class Product
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product", orphanRemoval=true)
      */
     private $comments;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Card::class, mappedBy="product")
-     */
-    private $cards;
 
     /**
      * @Groups({"product_read", "product_write"})
@@ -118,6 +118,12 @@ class Product
      * @Gedmo\Timestampable(on="change", field={"title", "body"})
      */
     private $contentChanged;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Card::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $card;
 
 
     /**
@@ -174,7 +180,6 @@ class Product
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->cards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -273,34 +278,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|Card[]
-     */
-    public function getCards(): Collection
-    {
-        return $this->cards;
-    }
-
-    public function addCard(Card $card): self
-    {
-        if (!$this->cards->contains($card)) {
-            $this->cards[] = $card;
-            $card->addProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCard(Card $card): self
-    {
-        if ($this->cards->contains($card)) {
-            $this->cards->removeElement($card);
-            $card->removeProduct($this);
-        }
-
-        return $this;
-    }
-
     public function getUserId(): ?User
     {
         return $this->user_id;
@@ -309,6 +286,18 @@ class Product
     public function setUserId(?User $user_id): self
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getCard(): ?Card
+    {
+        return $this->card;
+    }
+
+    public function setCard(?Card $card): self
+    {
+        $this->card = $card;
 
         return $this;
     }
