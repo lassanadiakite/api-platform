@@ -107,7 +107,7 @@ class Product
     private $image;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $countInStock;
 
